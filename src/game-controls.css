@@ -1,0 +1,133 @@
+/*
+ * Kontrolbjælken under brættet. Den bruger samme spor som brættet (0,3fr margen, 8 felter, 0,3fr margen),
+ * så hver knap står under sit felt (a–h). Knapperne skaleres ud fra feltbredden.
+ */
+.game-controls {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  align-items: center;
+  width: 100%;
+  margin-top: 12px;
+  padding: 0 calc(100% * 0.3 / 8.6);
+  font: inherit;
+}
+
+.game-controls__button,
+.game-controls__summary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  justify-self: center;
+  width: 80%;
+  aspect-ratio: 4 / 3;
+  min-height: 0;
+  margin: 0 auto;
+  padding: 0;
+  border: 1px solid #c9b79c;
+  border-radius: 8px;
+  background: #fbf7f1;
+  color: #5a4630;
+  font: inherit;
+  cursor: pointer;
+  list-style: none;
+}
+
+.game-controls__button:hover:not(:disabled),
+.game-controls__summary:hover {
+  background: #f0e4d2;
+}
+
+.game-controls__button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.game-controls__button[aria-pressed="true"] {
+  background: #e6b27a;
+  border-color: #b9783c;
+}
+
+.game-controls__button:focus-visible,
+.game-controls__summary:focus-visible {
+  outline: 2px solid #b9783c;
+  outline-offset: 2px;
+}
+
+.game-controls__summary::-webkit-details-marker {
+  display: none;
+}
+
+.game-controls__icon {
+  width: 60%;
+  height: 60%;
+  flex: none;
+}
+
+/* Wrapperen får samme mål som de øvrige knapper, så indstillingsknappen ikke fylder hele feltet. */
+.game-controls__settings {
+  position: relative;
+  justify-self: center;
+  width: 80%;
+  min-width: 0;
+}
+
+.game-controls__settings .game-controls__summary {
+  width: 100%;
+}
+
+/* Samme udseende som .cw-controls__settings i chessworkspace (main.scss). Panelet åbner opad. */
+.game-controls__panel {
+  position: absolute;
+  z-index: 10;
+  bottom: calc(100% + 8px);
+  left: 0;
+  display: grid;
+  min-width: 210px;
+  max-height: calc(100vh - 16px);
+  gap: 10px;
+  overflow-y: auto;
+  padding: 14px;
+  border: 1px solid rgba(23, 33, 31, 0.16);
+  background: #f4f1e9;
+  box-shadow: 0 16px 32px rgba(23, 33, 31, 0.18);
+}
+
+.game-controls__panel label {
+  display: grid;
+  gap: 5px;
+  margin: 0;
+  color: #68716d;
+  font-size: 0.64rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.game-controls__panel select {
+  min-height: 32px;
+  padding: 0 7px;
+  border: 1px solid rgba(23, 33, 31, 0.16);
+  color: #17211f;
+  background: #fffdf8;
+  font: inherit;
+  font-size: 0.74rem;
+}
+
+.game-controls__panel .game-controls__check {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 7px;
+  text-align: left;
+}
+
+.game-controls__panel input {
+  flex: 0 0 15px;
+  width: 15px;
+  min-width: 15px;
+  min-height: 15px;
+  margin: 0;
+  padding: 0;
+  accent-color: #4a2a0c;
+}

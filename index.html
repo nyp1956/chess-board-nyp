@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="da">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>chess-board-nyp – demo</title>
+  </head>
+  <body>
+    <main class="demo">
+      <header class="demo__header">
+        <h1>chess-board-nyp</h1>
+        <p data-demo-i18n="header.intro">Brættets størrelse følger det parent-element, det er placeret i.</p>
+      </header>
+
+      <div class="demo__layout">
+        <section class="demo__panel" aria-labelledby="main-heading">
+          <h2 id="main-heading" data-demo-i18n="main.heading">Hovedbræt</h2>
+
+          <div class="demo__size">
+            <label for="size"><span data-demo-i18n="size.label">Bredde på parent:</span> <output id="size-output">560</output> <span data-demo-i18n="size.unit">px</span></label>
+            <input id="size" type="range" min="240" max="760" step="10" value="560" />
+          </div>
+
+          <div id="main-board-frame" class="board-frame"></div>
+
+          <p id="status" class="demo__status" aria-live="polite"></p>
+          <p class="demo__fen">FEN: <code id="current-fen"></code></p>
+        </section>
+
+        <aside class="demo__panel">
+          <h2 data-demo-i18n="control.heading">Kontrol</h2>
+
+          <div class="demo__buttons">
+            <button id="new-game" type="button" data-demo-i18n="control.newGame">Nyt spil</button>
+          </div>
+
+          <form id="fen-form" class="demo__fen-form">
+            <label for="fen-input" data-demo-i18n="fen.label">Indlæs FEN</label>
+            <input id="fen-input" type="text" spellcheck="false" autocomplete="off" />
+            <button type="submit" data-demo-i18n="fen.submit">Indlæs</button>
+            <p id="fen-error" class="demo__error" role="alert"></p>
+          </form>
+
+          <form id="best-move-form" class="demo__fen-form">
+            <label for="best-move-input" data-demo-i18n="bestMove.label">Bedste træk (UCI, fx e2e4)</label>
+            <input id="best-move-input" type="text" spellcheck="false" autocomplete="off" />
+            <button type="submit" data-demo-i18n="bestMove.submit">Vis</button>
+            <p id="best-move-error" class="demo__error" role="alert"></p>
+          </form>
+
+          <div class="demo__options">
+            <label><span data-demo-i18n="options.language">Sprog for brættet</span>
+              <select id="language">
+                <option value="da">Dansk</option>
+                <option value="en">English</option>
+              </select>
+            </label>
+            <label class="demo__checkbox">
+              <input id="controls" type="checkbox" checked />
+              <span data-demo-i18n="options.controls">Vis kontrolbjælke under brættet</span>
+            </label>
+            <label><span data-demo-i18n="options.promotion">Bondeforvandling</span>
+              <select id="promotion">
+                <option value="ask" data-demo-i18n="promotion.ask">Spørg (valg i brættet)</option>
+                <option value="q" data-demo-i18n="promotion.q">Dronning</option>
+                <option value="r" data-demo-i18n="promotion.r">Tårn</option>
+                <option value="b" data-demo-i18n="promotion.b">Løber</option>
+                <option value="n" data-demo-i18n="promotion.n">Springer</option>
+              </select>
+            </label>
+            <label class="demo__checkbox">
+              <input id="draggable" type="checkbox" checked />
+              <span data-demo-i18n="options.draggable">Tillad træk med musen/fingeren</span>
+            </label>
+          </div>
+
+          <h2 data-demo-i18n="moves.heading">Trækliste</h2>
+          <ol id="move-list" class="demo__moves"></ol>
+        </aside>
+      </div>
+
+      <section class="demo__panel demo__sizes" aria-labelledby="sizes-heading">
+        <h2 id="sizes-heading" data-demo-i18n="sizes.heading">Forskellige parent-bredder</h2>
+        <p data-demo-i18n="sizes.intro">Hvert bræt er uafhængigt og har sit eget spil. Mellem-brættet har kontrolbjælken skjult og viser kun en stilling.</p>
+        <div class="demo__size-grid">
+          <div>
+            <h3 data-demo-i18n="sizes.small">260 px</h3>
+            <div id="board-small" class="board-frame" style="width: 260px"></div>
+          </div>
+          <div>
+            <h3 data-demo-i18n="sizes.medium">360 px, forest + chess24, uden kontrol</h3>
+            <div id="board-medium" class="board-frame" style="width: 360px"></div>
+          </div>
+          <div>
+            <h3 data-demo-i18n="sizes.full">100 %, slate, vendt</h3>
+            <div id="board-full" class="board-frame"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="/src/demo.js"></script>
+  </body>
+</html>
