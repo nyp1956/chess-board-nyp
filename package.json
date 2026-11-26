@@ -17,6 +17,7 @@
     "test": "node --test test/*.test.js"
   },
   "dependencies": {
+    "chess-pgn-nyp": "file:../chess-pgn-nyp",
     "chess.js": "^1.4.0"
   },
   "devDependencies": {
