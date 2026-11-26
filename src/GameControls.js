@@ -36,6 +36,7 @@ export default class GameControls {
   #board;
   #root;
   #timer = null;
+  #ticking = false;
   #elements;
 
   constructor(board) {
@@ -214,7 +215,10 @@ export default class GameControls {
     keyboard.addEventListener('change', () => this.#changeSetting({ keyboard: keyboard.checked }));
 
     this.#board.element.addEventListener('chessboard:change', (event) => {
-      if (event.detail.reason !== 'navigate') this.stop();
+      const { reason } = event.detail;
+      // Et 'position' under afspilning kommer fra en lineændring i visningen, ikke fra brugeren.
+      const fromTick = reason === 'position' && this.#ticking;
+      if (reason !== 'navigate' && !fromTick) this.stop();
       this.update();
     });
     this.#board.element.addEventListener('keydown', (event) => this.#handleKey(event));
@@ -227,7 +231,12 @@ export default class GameControls {
 
   #tick() {
     const { game } = this.#board;
-    this.#board.goTo(game.ply() + 1);
+    this.#ticking = true;
+    try {
+      this.#board.goTo(game.ply() + 1);
+    } finally {
+      this.#ticking = false;
+    }
     if (game.ply() >= game.total()) this.stop();
   }
 
