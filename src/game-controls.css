@@ -1,9 +1,10 @@
 /*
  * Kontrolbjælken under brættet. Den bruger samme spor som brættet (0,3fr margen, 8 felter, 0,3fr margen),
- * så hver knap står under sit felt (a–h). Knapperne skaleres ud fra feltbredden.
+ * så hver knap står under sit felt (a–h). Knapperne skaleres ud fra feltbredden, og hjørneradius er i cqi af kontrolbjælken.
  */
 .game-controls {
   box-sizing: border-box;
+  container-type: inline-size;
   display: grid;
   grid-template-columns: repeat(8, minmax(0, 1fr));
   align-items: center;
@@ -26,7 +27,7 @@
   margin: 0 auto;
   padding: 0;
   border: 1px solid #c9b79c;
-  border-radius: 8px;
+  border-radius: 1.5cqi;
   background: #fbf7f1;
   color: #5a4630;
   font: inherit;

@@ -78,7 +78,7 @@ export default class GameControls {
     const ply = game.ply();
     const total = game.total();
     const playing = this.isPlaying();
-    const { play, first, previous, next, last, download, speed, pieceStyle, boardTheme, coordinates, lastMoveArrow, bestMoveArrow, keyboard } = this.#elements;
+    const { play, first, previous, next, last, download, speed, pieceStyle, boardTheme, coordinates, thinFrame, lastMoveArrow, bestMoveArrow, keyboard } = this.#elements;
 
     first.disabled = ply === 0;
     previous.disabled = ply === 0;
@@ -96,6 +96,7 @@ export default class GameControls {
     pieceStyle.value = settings.pieceStyle;
     boardTheme.value = settings.theme;
     coordinates.checked = settings.showCoordinates;
+    thinFrame.checked = settings.thinFrame;
     lastMoveArrow.checked = settings.showLastMoveArrow;
     bestMoveArrow.checked = settings.showBestMoveArrow;
     keyboard.checked = settings.keyboard;
@@ -126,6 +127,7 @@ export default class GameControls {
             <select data-setting="board-theme">${themeOptions}</select>
           </label>
           <label class="game-controls__check"><input type="checkbox" data-setting="coordinates"> <span data-i18n="controls.coordinates"></span></label>
+          <label class="game-controls__check"><input type="checkbox" data-setting="thin-frame"> <span data-i18n="controls.thinFrame"></span></label>
           <label class="game-controls__check"><input type="checkbox" data-setting="last-move-arrow"> <span data-i18n="controls.lastMoveArrow"></span></label>
           <label class="game-controls__check"><input type="checkbox" data-setting="best-move-arrow"> <span data-i18n="controls.bestMoveArrow"></span></label>
           <label class="game-controls__check"><input type="checkbox" data-setting="keyboard"> <span data-i18n="controls.keyboard"></span></label>
@@ -173,6 +175,7 @@ export default class GameControls {
       pieceStyle: q('[data-setting="piece-style"]'),
       boardTheme: q('[data-setting="board-theme"]'),
       coordinates: q('[data-setting="coordinates"]'),
+      thinFrame: q('[data-setting="thin-frame"]'),
       lastMoveArrow: q('[data-setting="last-move-arrow"]'),
       bestMoveArrow: q('[data-setting="best-move-arrow"]'),
       keyboard: q('[data-setting="keyboard"]'),
@@ -180,7 +183,7 @@ export default class GameControls {
   }
 
   #bind() {
-    const { play, first, previous, next, last, flip, download, settings, speed, pieceStyle, boardTheme, coordinates, lastMoveArrow, bestMoveArrow, keyboard } = this.#elements;
+    const { play, first, previous, next, last, flip, download, settings, speed, pieceStyle, boardTheme, coordinates, thinFrame, lastMoveArrow, bestMoveArrow, keyboard } = this.#elements;
 
     play.addEventListener('click', () => (this.isPlaying() ? this.stop() : this.start()));
     first.addEventListener('click', () => this.#navigate(0));
@@ -205,6 +208,7 @@ export default class GameControls {
     pieceStyle.addEventListener('change', () => this.#changeSetting({ pieceStyle: pieceStyle.value }));
     boardTheme.addEventListener('change', () => this.#changeSetting({ theme: boardTheme.value }));
     coordinates.addEventListener('change', () => this.#changeSetting({ showCoordinates: coordinates.checked }));
+    thinFrame.addEventListener('change', () => this.#changeSetting({ thinFrame: thinFrame.checked }));
     lastMoveArrow.addEventListener('change', () => this.#changeSetting({ showLastMoveArrow: lastMoveArrow.checked }));
     bestMoveArrow.addEventListener('change', () => this.#changeSetting({ showBestMoveArrow: bestMoveArrow.checked }));
     keyboard.addEventListener('change', () => this.#changeSetting({ keyboard: keyboard.checked }));

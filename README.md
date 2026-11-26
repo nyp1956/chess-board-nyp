@@ -67,6 +67,7 @@ board.element.addEventListener('chessboard:change', (event) => {
 | `showCoordinates` | `true` | Shows file and rank labels. |
 | `showLastMoveArrow` | `false` | Draws an arrow from the last move's from-square to its to-square. |
 | `showBestMoveArrow` | `false` | Shows the arrow set with `setBestMove`. |
+| `thinFrame` | `false` | Replaces the wooden frame with a thin outline. File and rank labels are hidden, because they are drawn in the frame. |
 | `promotion` | `'ask'` | `'ask'` opens a piece picker. `'q'`, `'r'`, `'b'` or `'n'` promote automatically. |
 | `controls` | `true` | Shows the control bar under the board. |
 | `keyboard` | `true` | Enables keyboard navigation when the board has focus. |
@@ -157,7 +158,7 @@ While the promotion picker is open, `Escape` closes it.
 
 `GameControls` is created automatically when `controls` is `true`. It is placed after the board. The buttons are, in order:
 Settings, Auto-play, Start, Back, Forward, End, Flip board, and Download PGN. The Settings panel contains playback speed, piece style, theme,
-coordinates, last-move arrow and keyboard.
+coordinates, thin frame, last-move arrow and keyboard.
 
 You can create a control bar yourself with `new GameControls(board)`. Set `controls: false` on the board first, so you don't get two control bars. The class has `element`, `isPlaying()`, `start()`, `stop()`, `update()` and `destroy()`.
 
@@ -178,7 +179,7 @@ default `Event` is `Chess board`, and the file name is always `game-<date>.pgn`.
 
 Changes made in the Settings panel are saved in `localStorage` under `chess-board-nyp:settings`. The saved keys are `playbackSpeed`, `pieceStyle`,
 `theme`, `showCoordinates`, `showLastMoveArrow` and `keyboard`. When a board is created, saved values take priority over the constructor options. Invalid or unknown saved values are ignored.
-`locale`, `promotion`, `flipped` and `showBestMoveArrow` are not saved.
+`locale`, `promotion`, `flipped`, `showBestMoveArrow` and `thinFrame` are not saved.
 
 ### Analysis arrows
 

@@ -11,7 +11,6 @@ const PROMOTION_PIECES = ['q', 'r', 'b', 'n'];
 const SVG_NS = 'http://www.w3.org/2000/svg';
 // Rammen er 0.3 felter bred på hver side, så brættet måler 8.6 felter i hver retning.
 const FRAME_UNITS = 0.3;
-const BOARD_UNITS = 8 + 2 * FRAME_UNITS;
 const UCI_PATTERN = /^[a-h][1-8][a-h][1-8][qrbn]?$/;
 
 const DEFAULT_SETTINGS = {
@@ -22,6 +21,7 @@ const DEFAULT_SETTINGS = {
   showCoordinates: true,
   showLastMoveArrow: false,
   showBestMoveArrow: false,
+  thinFrame: false,
   promotion: 'ask',
   controls: true,
   keyboard: true,
@@ -212,7 +212,7 @@ export default class ChessBoard {
 
   render() {
     this.#closePromotion();
-    const { flipped, pieceStyle, theme, showCoordinates, keyboard, locale } = this.#settings;
+    const { flipped, pieceStyle, theme, showCoordinates, thinFrame, keyboard, locale } = this.#settings;
     this.element.setAttribute('aria-label', this.#customAriaLabel ?? translate(locale, 'board.label'));
     this.element.className = [
       'chess-board',
@@ -220,6 +220,7 @@ export default class ChessBoard {
       `chess-board--pieces-${pieceStyle}`,
       flipped && 'chess-board--flipped',
       !showCoordinates && 'chess-board--no-coordinates',
+      thinFrame && 'chess-board--thin-frame',
     ].filter(Boolean).join(' ');
     if (keyboard) this.element.tabIndex = 0;
     else this.element.removeAttribute('tabindex');
@@ -227,15 +228,16 @@ export default class ChessBoard {
   }
 
   #buildArrows() {
-    const { showLastMoveArrow, showBestMoveArrow, flipped } = this.#settings;
+    const { showLastMoveArrow, showBestMoveArrow, flipped, thinFrame } = this.#settings;
+    const frame = thinFrame ? 0 : FRAME_UNITS;
     const arrows = [];
     const lastMove = showLastMoveArrow ? this.#game.lastMove() : null;
     if (lastMove) {
-      arrows.push(arrowElement('chess-board__arrow chess-board__arrow--last-move', arrowMarkup(lastMove.from, lastMove.to, flipped)));
+      arrows.push(arrowElement('chess-board__arrow chess-board__arrow--last-move', arrowMarkup(lastMove.from, lastMove.to, flipped, frame), frame));
     }
     const bestMove = showBestMoveArrow ? this.#currentBestMove() : null;
     if (bestMove) {
-      arrows.push(arrowElement('chess-board__arrow chess-board__arrow--best', arrowMarkup(bestMove.slice(0, 2), bestMove.slice(2, 4), flipped)));
+      arrows.push(arrowElement('chess-board__arrow chess-board__arrow--best', arrowMarkup(bestMove.slice(0, 2), bestMove.slice(2, 4), flipped, frame), frame));
     }
     return arrows;
   }
@@ -615,18 +617,19 @@ function pickSettings(source) {
 }
 
 // Midtpunkt af et felt i SVG-enheder, med samme grid som brættet. Øverste række er rank 8 (eller 1 ved flipped).
-function squareCenter(square, flipped) {
+function squareCenter(square, flipped, frame) {
   const file = FILES.indexOf(square[0]);
   const rank = Number(square[1]);
   const column = flipped ? 7 - file : file;
   const row = flipped ? rank - 1 : 8 - rank;
-  return { x: FRAME_UNITS + column + 0.5, y: FRAME_UNITS + row + 0.5 };
+  return { x: frame + column + 0.5, y: frame + row + 0.5 };
 }
 
-function arrowElement(className, markup) {
+function arrowElement(className, markup, frame) {
+  const size = 8 + 2 * frame;
   const svg = document.createElementNS(SVG_NS, 'svg');
   svg.setAttribute('class', className);
-  svg.setAttribute('viewBox', `0 0 ${BOARD_UNITS} ${BOARD_UNITS}`);
+  svg.setAttribute('viewBox', `0 0 ${size} ${size}`);
   svg.setAttribute('aria-hidden', 'true');
   svg.setAttribute('focusable', 'false');
   svg.innerHTML = markup;
@@ -638,9 +641,9 @@ function positionKey(fen) {
   return fen.split(' ').slice(0, 4).join(' ');
 }
 
-function arrowMarkup(fromSquare, toSquare, flipped) {
-  const from = squareCenter(fromSquare, flipped);
-  const to = squareCenter(toSquare, flipped);
+function arrowMarkup(fromSquare, toSquare, flipped, frame) {
+  const from = squareCenter(fromSquare, flipped, frame);
+  const to = squareCenter(toSquare, flipped, frame);
   const length = Math.hypot(to.x - from.x, to.y - from.y);
   const ux = (to.x - from.x) / length;
   const uy = (to.y - from.y) / length;
