@@ -43,6 +43,7 @@ export default class ChessBoard {
   #promotionDialog = null;
   #promotionKeydown = null;
   #bestMove = null;
+  #preview = null;
 
   constructor(container, options = {}) {
     if (!(container instanceof HTMLElement)) {
@@ -145,6 +146,32 @@ export default class ChessBoard {
     this.render();
   }
 
+  // Viser stillingen efter et træk uden at ændre spillet. Visningen forsvinder, når stillingen ændres.
+  // Returnerer false, hvis trækket er ulovligt.
+  previewMove(from, to, promotion = 'q') {
+    const game = new ChessGame(this.#game.fen());
+    if (!game.move(from, to, promotion)) return false;
+    this.#preview = { position: positionKey(this.#game.fen()), game };
+    this.render();
+    return true;
+  }
+
+  clearPreview() {
+    if (!this.#preview) return;
+    this.#preview = null;
+    this.render();
+  }
+
+  // Sletter de træk, der ligger efter den aktuelle stilling. Returnerer antallet af slettede træk.
+  deleteMovesAfterPosition() {
+    const count = this.#game.deleteMovesAfterPosition();
+    if (count > 0) {
+      this.render();
+      this.#emit('delete');
+    }
+    return count;
+  }
+
   goTo(ply) {
     this.#game.goTo(ply);
     this.#selected = null;
@@ -227,15 +254,21 @@ export default class ChessBoard {
     this.element.replaceChildren(...this.#buildCells(), ...this.#buildArrows());
   }
 
+  // Stillingen der vises: forhåndsvisningen, hvis den gælder for den aktuelle stilling, ellers selve spillet.
+  #displayGame() {
+    return this.#preview?.position === positionKey(this.#game.fen()) ? this.#preview.game : this.#game;
+  }
+
   #buildArrows() {
     const { showLastMoveArrow, showBestMoveArrow, flipped, thinFrame } = this.#settings;
     const frame = thinFrame ? 0 : FRAME_UNITS;
     const arrows = [];
-    const lastMove = showLastMoveArrow ? this.#game.lastMove() : null;
+    const shown = this.#displayGame();
+    const lastMove = showLastMoveArrow ? shown.lastMove() : null;
     if (lastMove) {
       arrows.push(arrowElement('chess-board__arrow chess-board__arrow--last-move', arrowMarkup(lastMove.from, lastMove.to, flipped, frame), frame));
     }
-    const bestMove = showBestMoveArrow ? this.#currentBestMove() : null;
+    const bestMove = showBestMoveArrow && shown === this.#game ? this.#currentBestMove() : null;
     if (bestMove) {
       arrows.push(arrowElement('chess-board__arrow chess-board__arrow--best', arrowMarkup(bestMove.slice(0, 2), bestMove.slice(2, 4), flipped, frame), frame));
     }
@@ -335,7 +368,7 @@ export default class ChessBoard {
   }
 
   // Dispatches chessboard:change so controls and host pages can react.
-  // reason: 'move' | 'navigate' | 'position'
+  // reason: 'move' | 'navigate' | 'position' | 'delete'
   #emit(reason) {
     this.element.dispatchEvent(new CustomEvent('chessboard:change', {
       bubbles: true,
@@ -364,6 +397,7 @@ export default class ChessBoard {
     });
 
     const activePieces = pieceStyles[pieceStyle];
+    const shown = this.#displayGame();
     ranks.forEach((rank, row) => {
       files.forEach((file, column) => {
         const name = `${file}${rank}`;
@@ -374,7 +408,7 @@ export default class ChessBoard {
         if (this.#targets.includes(name)) square.classList.add('chess-board__square--target');
         if (name === this.#hovered) square.classList.add('chess-board__square--hover');
 
-        const piece = this.#game.pieceAt(name);
+        const piece = shown.pieceAt(name);
         if (piece) {
           const symbol = piece.color === 'w' ? piece.type.toUpperCase() : piece.type;
           const image = document.createElement('img');

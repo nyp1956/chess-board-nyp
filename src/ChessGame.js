@@ -104,6 +104,13 @@ export default class ChessGame {
     return this.#chess.history({ verbose: true }).at(-1) ?? null;
   }
 
+  // Sletter de træk, der ligger efter den aktuelle stilling. Returnerer antallet af slettede træk.
+  deleteMovesAfterPosition() {
+    const count = this.#future.length;
+    this.#future = [];
+    return count;
+  }
+
   // SAN for the whole line, including moves that were undone.
   line() {
     return [...this.history(), ...this.#future.map((move) => move.san).reverse()];

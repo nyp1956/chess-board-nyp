@@ -46,7 +46,7 @@ board.setBestMove('e2e4');                  // green arrow for a best move; null
 board.setHeaders({ Event: 'Tournament', White: 'Hansen', Black: 'Larsen' });
 
 board.element.addEventListener('chessboard:change', (event) => {
-  const { reason, ply, total } = event.detail; // reason: 'move' | 'navigate' | 'position'
+  const { reason, ply, total } = event.detail; // reason: 'move' | 'navigate' | 'position' | 'delete'
 });
 ```
 
@@ -90,6 +90,9 @@ board.element.addEventListener('chessboard:change', (event) => {
 - `configure(changes)`: changes settings. Invalid values throw a `RangeError`, and no settings change. Does not emit `chessboard:change`.
 - `setHeaders(headers)`: replaces the PGN headers used for download. The new headers are not merged with the old ones.
 - `setBestMove(uci)`: sets a best move, described under [Analysis arrows](#analysis-arrows).
+- `previewMove(from, to, promotion = 'q')`: shows the position after a move without changing the game. Returns `false` for an illegal move. The preview disappears when the position changes, or when `clearPreview()` is called. Use it for hover previews.
+- `clearPreview()`: removes the preview.
+- `deleteMovesAfterPosition()`: deletes the moves after the current position. Returns the number of deleted moves and emits `chessboard:change` with `reason: 'delete'` if any were deleted.
 - `render()`: redraws the board. The methods above already redraw, so you rarely need it.
 - `destroy()`: removes the board and its control bar from the page.
 
@@ -110,6 +113,7 @@ Read-only properties:
 | `'move'` | A move made with `makeMove`, by the user, or from the picker. |
 | `'navigate'` | `goTo`, `undo`, `redo`, and the navigation buttons or keys. |
 | `'position'` | `setPosition`, `reset` and `setLine`. |
+| `'delete'` | `deleteMovesAfterPosition`, when moves were deleted. |
 
 ### Game state (`ChessGame`)
 
@@ -131,6 +135,7 @@ game.pgn({ Event: 'Test' });  // exports the game as PGN
 - `legalTargets(square)`: the squares that a piece on `square` can move to.
 - `move(from, to, promotion = 'q')`: makes a move, or returns `null` if it is illegal. Making a new move discards any moves that were undone.
 - `undo()`, `redo()`: return the move, or `null`.
+- `deleteMovesAfterPosition()`: deletes the moves that were undone (the moves after the current position). Returns how many were deleted.
 - `goTo(ply)`, `ply()`, `total()`: navigation and move counts.
 - `history()`: SAN moves up to the current position.
 - `line()`: SAN for the whole line, including moves that were undone.

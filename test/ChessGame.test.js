@@ -30,6 +30,15 @@ test('move promotes to a queen by default', () => {
   assert.equal(game.pieceAt('a8')?.type, 'q');
 });
 
+test('deleteMovesAfterPosition removes only the moves after the current position', () => {
+  const game = new ChessGame();
+  game.loadLine(game.fen(), ['e4', 'e5', 'Nf3'], 1);
+  assert.equal(game.deleteMovesAfterPosition(), 2);
+  assert.deepEqual(game.line(), ['e4']);
+  assert.equal(game.total(), 1);
+  assert.equal(game.deleteMovesAfterPosition(), 0);
+});
+
 test('load throws on an invalid FEN', () => {
   const game = new ChessGame();
   assert.throws(() => game.load('not a fen'));
