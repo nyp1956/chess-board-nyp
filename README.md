@@ -72,7 +72,7 @@ The board and its control bar are placed inside a `<div class="chess-board-wrapp
 | `thinFrame` | `false` | Replaces the wooden frame with a thin outline. File and rank labels are hidden, because they are drawn in the frame. |
 | `promotion` | `'ask'` | `'ask'` opens a piece picker. `'q'`, `'r'`, `'b'` or `'n'` promote automatically. |
 | `controls` | `true` | Shows the control bar under the board. |
-| `keyboard` | `true` | Enables keyboard navigation when the board has focus. |
+| `keyboard` | `true` | Enables keyboard navigation for the board that was used last, on the whole page. |
 | `playbackSpeed` | `2000` | Milliseconds between moves during auto-play. Must be greater than 0. |
 | `locale` | browser language | `'da'` or `'en'`. Other browser languages use English. An unknown value throws a `RangeError`. |
 | `onMove` | `null` | `(move, board)` is called after each successful move. `move` is the chess.js move object. |
@@ -153,7 +153,7 @@ game.pgn({ Event: 'Test' });  // exports the game as PGN
 
 ### Keyboard
 
-When `keyboard` is on, the board can receive focus. Keys are ignored when focus is on an `input`, `select`, `textarea`, `button` or `summary`.
+When `keyboard` is on, the keys work on the whole page, not only when the board has focus. They control the board that was clicked or focused last (the first board on the page at start). Keys are ignored when focus is on an `input`, `select`, `textarea`, `button` or `summary`. While it is on, the arrow keys and space do not scroll the page.
 
 - `Home` and `End`: go to the start or the last move.
 - `←` and `→`: go to the previous or next move.
@@ -167,7 +167,9 @@ While the promotion picker is open, `Escape` closes it.
 Settings, Auto-play, Start, Back, Forward, End, Flip board, and Download PGN. The Settings panel contains playback speed, piece style, theme,
 coordinates, thin frame, last-move arrow and keyboard.
 
-You can create a control bar yourself with `new GameControls(board)`. Set `controls: false` on the board first, so you don't get two control bars. The class has `element`, `isPlaying()`, `start()`, `stop()`, `update()` and `destroy()`.
+`board.controlBar` returns the board's `GameControls` instance, or `null` when `controls` is `false`. The class has `element`, `isPlaying()`, `start()`, `stop()`, `update()` and `destroy()`.
+
+You can create a control bar yourself with `new GameControls(board)`. Set `controls: false` on the board first, so you don't get two control bars.
 
 ### Localization
 

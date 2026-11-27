@@ -91,6 +91,10 @@ export default class ChessBoard {
     return { ...this.#settings };
   }
 
+  get controlBar() {
+    return this.#controls;
+  }
+
   // PGN headers used when the game is downloaded. They override the defaults.
   get headers() {
     return { ...this.#headers };

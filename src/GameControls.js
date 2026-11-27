@@ -39,6 +39,9 @@ export default class GameControls {
   #ticking = false;
   #elements;
 
+  static #active = null;
+  static #listening = false;
+
   constructor(board) {
     this.#board = board;
     this.#root = document.createElement('div');
@@ -49,6 +52,10 @@ export default class GameControls {
     this.#elements = this.#collectElements();
     this.#bind();
     this.update();
+    for (const element of [board.element, this.#root]) {
+      for (const type of ['pointerdown', 'focusin']) element.addEventListener(type, () => this.#activate());
+    }
+    if (!GameControls.#active) this.#activate();
   }
 
   get element() {
@@ -104,6 +111,7 @@ export default class GameControls {
   }
 
   destroy() {
+    if (GameControls.#active === this) GameControls.#active = null;
     this.stop();
     this.#root.remove();
   }
@@ -221,7 +229,16 @@ export default class GameControls {
       if (reason !== 'navigate' && !fromTick) this.stop();
       this.update();
     });
-    this.#board.element.addEventListener('keydown', (event) => this.#handleKey(event));
+  }
+
+  #activate() {
+    GameControls.#active = this;
+    if (GameControls.#listening) return;
+    GameControls.#listening = true;
+    document.addEventListener('keydown', (event) => {
+      const active = GameControls.#active;
+      if (active) active.#handleKey(event);
+    });
   }
 
   #changeSetting(changes) {
