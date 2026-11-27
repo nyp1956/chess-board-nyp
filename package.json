@@ -7,7 +7,7 @@
   "exports": {
     ".": "./src/index.js",
     "./chess-board.css": "./src/chess-board.css",
-    "./game-controls.css": "./src/game-controls.css",
+    "./chess-game-controls.css": "./src/chess-game-controls.css",
     "./src/*": "./src/*"
   },
   "scripts": {

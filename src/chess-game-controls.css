@@ -2,7 +2,7 @@
  * Kontrolbjælken under brættet. Den bruger samme spor som brættet (0,3fr margen, 8 felter, 0,3fr margen),
  * så hver knap står under sit felt (a–h). Knapperne skaleres ud fra feltbredden, og hjørneradius er i cqi af kontrolbjælken.
  */
-.game-controls {
+.chess-game-controls {
   box-sizing: border-box;
   container-type: inline-size;
   display: grid;
@@ -14,8 +14,8 @@
   font: inherit;
 }
 
-.game-controls__button,
-.game-controls__summary {
+.chess-game-controls__button,
+.chess-game-controls__summary {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -35,51 +35,51 @@
   list-style: none;
 }
 
-.game-controls__button:hover:not(:disabled),
-.game-controls__summary:hover {
+.chess-game-controls__button:hover:not(:disabled),
+.chess-game-controls__summary:hover {
   background: #f0e4d2;
 }
 
-.game-controls__button:disabled {
+.chess-game-controls__button:disabled {
   opacity: 0.4;
   cursor: default;
 }
 
-.game-controls__button[aria-pressed="true"] {
+.chess-game-controls__button[aria-pressed="true"] {
   background: #e6b27a;
   border-color: #b9783c;
 }
 
-.game-controls__button:focus-visible,
-.game-controls__summary:focus-visible {
+.chess-game-controls__button:focus-visible,
+.chess-game-controls__summary:focus-visible {
   outline: 2px solid #b9783c;
   outline-offset: 2px;
 }
 
-.game-controls__summary::-webkit-details-marker {
+.chess-game-controls__summary::-webkit-details-marker {
   display: none;
 }
 
-.game-controls__icon {
+.chess-game-controls__icon {
   width: 60%;
   height: 60%;
   flex: none;
 }
 
 /* Wrapperen får samme mål som de øvrige knapper, så indstillingsknappen ikke fylder hele feltet. */
-.game-controls__settings {
+.chess-game-controls__settings {
   position: relative;
   justify-self: center;
   width: 80%;
   min-width: 0;
 }
 
-.game-controls__settings .game-controls__summary {
+.chess-game-controls__settings .chess-game-controls__summary {
   width: 100%;
 }
 
 /* Samme udseende som .cw-controls__settings i chessworkspace (main.scss). Panelet åbner opad. */
-.game-controls__panel {
+.chess-game-controls__panel {
   position: absolute;
   z-index: 10;
   bottom: calc(100% + 8px);
@@ -95,7 +95,7 @@
   box-shadow: 0 16px 32px rgba(23, 33, 31, 0.18);
 }
 
-.game-controls__panel label {
+.chess-game-controls__panel label {
   display: grid;
   gap: 5px;
   margin: 0;
@@ -105,7 +105,7 @@
   text-transform: uppercase;
 }
 
-.game-controls__panel select {
+.chess-game-controls__panel select {
   min-height: 32px;
   padding: 0 7px;
   border: 1px solid rgba(23, 33, 31, 0.16);
@@ -115,7 +115,7 @@
   font-size: 0.74rem;
 }
 
-.game-controls__panel .game-controls__check {
+.chess-game-controls__panel .chess-game-controls__check {
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -123,7 +123,7 @@
   text-align: left;
 }
 
-.game-controls__panel input {
+.chess-game-controls__panel input {
   flex: 0 0 15px;
   width: 15px;
   min-width: 15px;

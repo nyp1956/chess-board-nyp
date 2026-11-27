@@ -21,9 +21,9 @@ npm install C:\github\chess-board-nyp
 ```
 
 The package has an `exports` field, so `import { ChessBoard } from 'chess-board-nyp'` resolves to `src/index.js`.
-The board and control bar import their own CSS (`chess-board.css` and `game-controls.css`). Use a bundler such as Vite,
+The board and control bar import their own CSS (`chess-board.css` and `chess-game-controls.css`). Use a bundler such as Vite,
 webpack or esbuild, and the CSS is included automatically. If you want to include the CSS yourself, the files are available
-as `chess-board-nyp/chess-board.css` and `chess-board-nyp/game-controls.css`.
+as `chess-board-nyp/chess-board.css` and `chess-board-nyp/chess-game-controls.css`.
 
 ## Usage
 
@@ -207,7 +207,7 @@ The board's size comes from CSS on its parent element, for example `#board-conta
 
 - `src/ChessBoard.js` – the board: rendering, mouse, touch and keyboard input, and the public API.
 - `src/ChessGame.js` – wrapper around chess.js that holds game state, navigation, legal moves and PGN.
-- `src/GameControls.js` + `src/game-controls.css` – the control bar under the board.
+- `src/GameControls.js` + `src/chess-game-controls.css` – the control bar under the board.
 - `src/settingsStorage.js` – saves and loads the Settings panel values (not the language) in `localStorage`.
 - `src/i18n.js` – translations (Danish and English) and `translate`.
 - `src/pieceSets.js` – piece styles and board themes.
