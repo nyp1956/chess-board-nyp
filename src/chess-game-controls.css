@@ -10,7 +10,7 @@
   align-items: center;
   width: 100%;
   margin: 0;
-  padding: 12px calc(100% * 0.3 / 8.6) 0;
+  padding: 12px calc(100% * 0.3 / 8.6);
   font: inherit;
 }
 

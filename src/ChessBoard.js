@@ -38,6 +38,7 @@ export default class ChessBoard {
   #drag = null;
   #press = null;
   #controls = null;
+  #wrapper;
   #headers;
   #customAriaLabel;
   #promotionDialog = null;
@@ -58,9 +59,12 @@ export default class ChessBoard {
     this.onMove = options.onMove ?? null;
     this.onSelect = options.onSelect ?? null;
 
+    this.#wrapper = document.createElement('div');
+    this.#wrapper.className = 'chess-board-wrapper';
     this.element = document.createElement('div');
     this.element.setAttribute('role', 'region');
-    container.append(this.element);
+    this.#wrapper.append(this.element);
+    container.append(this.#wrapper);
 
     this.element.addEventListener('pointerdown', this.#handlePointerDown);
     this.element.addEventListener('pointermove', this.#handlePointerMove);
@@ -286,7 +290,7 @@ export default class ChessBoard {
     this.#drag?.ghost?.remove();
     this.#drag = null;
     this.#press = null;
-    this.element.remove();
+    this.#wrapper.remove();
   }
 
   #isPromotion(from, to) {

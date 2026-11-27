@@ -52,6 +52,8 @@ board.element.addEventListener('chessboard:change', (event) => {
 
 ### Constructor options
 
+The board and its control bar are placed inside a `<div class="chess-board-wrapper">` in the container, so `#board-container` holds one wrapper with both.
+
 `new ChessBoard(container, options)` throws a `TypeError` if `container` is not an `HTMLElement`.
 
 | Option | Default | Description |
@@ -94,7 +96,7 @@ board.element.addEventListener('chessboard:change', (event) => {
 - `clearPreview()`: removes the preview.
 - `deleteMovesAfterPosition()`: deletes the moves after the current position. Returns the number of deleted moves and emits `chessboard:change` with `reason: 'delete'` if any were deleted.
 - `render()`: redraws the board. The methods above already redraw, so you rarely need it.
-- `destroy()`: removes the board and its control bar from the page.
+- `destroy()`: removes the board, its control bar and the wrapper from the page.
 
 Read-only properties:
 
